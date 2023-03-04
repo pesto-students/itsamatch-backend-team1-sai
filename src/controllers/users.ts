@@ -3,8 +3,8 @@ import okta, { User as OktaUser } from '@okta/okta-sdk-nodejs';
 import { IUser } from '../models/user';
 import { userService, userPreferenceService } from '../services';
 
-const oktaUrl = process.env.OKTA_URL || "https://dev-53982526.okta.com/oauth2/default";
-const oktaToken = process.env.OKTA_TOKEN || "00CqKjagqlXc6H3KIGOe6ezzWr1mQPRfwtVEybmbcK";
+const oktaUrl = process.env.OKTA_URL || 'https://dev-53982526.okta.com/oauth2/default';
+const oktaToken = process.env.OKTA_TOKEN || '00CqKjagqlXc6H3KIGOe6ezzWr1mQPRfwtVEybmbcK';
 
 const createUser = (req, res) => {
   console.log('create user controller');
@@ -40,7 +40,6 @@ const getUserPreference = async (req, res) => {
 };
 
 const oktaSignUp = async (req, res) => {
-
   try {
     const client: okta.Client = new okta.Client({
       orgUrl: oktaUrl,
@@ -94,24 +93,22 @@ const updateUserPreference = async (req, res) => {
   // return preference;
 };
 
-
-const getSuggestedUserProfiles = async (req,res) => {
+const getSuggestedUserProfiles = async (req, res) => {
   const { userId } = req.params;
-  const userPreference = await userPreferenceService.getUserPreference(userId)
+  const { page, size } = req.query;
 
+  const userPreference = await userPreferenceService.getUserPreference(userId);
 
-  const profiles = await getSuggestedProfilesBasedOnPreference(userId, userPreference)
+  const profiles = await getSuggestedProfilesBasedOnPreference(userId, userPreference, page, size);
   res.status(200).json({
     data: profiles,
   });
-  
-}
+};
 
-const getSuggestedProfilesBasedOnPreference =async (userId, userPreference) => {
+const getSuggestedProfilesBasedOnPreference = async (userId, userPreference, page, size) => {
   // TODO:- Update the alogrithm
-  return await userService.getUser()
-
-}
+  return await userService.getUser(page, size);
+};
 
 export {
   createUser,

@@ -1,11 +1,6 @@
 import { Schema, model } from 'mongoose';
-import { IUser } from './user';
 
-
-export interface ILocation {
-  latitude?: string;
-  longitude?: string;
-}
+import { IUser, ILocation } from './user';
 
 export interface IUserPreference {
   user: Schema.Types.ObjectId | IUser;

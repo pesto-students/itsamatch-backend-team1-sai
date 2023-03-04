@@ -1,7 +1,9 @@
-import { IUser, IUserPreference, User } from '../models';
+import { IUser, User } from '../models';
 
-const getUser = async () => {
+const getUser = async (page = 1, size = 20) => {
   return await User.find({})
+    .skip((page - 1) * size)
+    .limit(size);
 };
 
 const getById = async (userId: string): Promise<IUser> => {
@@ -41,4 +43,4 @@ const updateById = async (userId: string, userPayload: Partial<IUser>): Promise<
 // };
 
 // export { createUser, getById, getUser, getUserPreference, updateById, updateUserPreference };
-export { createUser, getById, getUser,updateById, };
+export { createUser, getById, getUser, updateById };
