@@ -5,10 +5,13 @@ import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 
 import { config } from './config';
-import { userRoutes } from './routes';
+import { userRoutes, matchesRoutes } from './routes';
 import { dbConnection } from './config';
 
 const port = config.PORT;
+
+const dotenv = require('dotenv');
+dotenv.config()
 
 // Connect to MongoDB
 dbConnection();
@@ -26,6 +29,7 @@ app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.tracingHandler());
 
 app.use('/users', userRoutes);
+app.use('/matches', matchesRoutes);
 
 app.get('/health', (_req, res) => res.json({ ok: true, message: 'health check working fine' }));
 

@@ -1,10 +1,10 @@
 import okta, { User as OktaUser } from '@okta/okta-sdk-nodejs';
 
 import { IUser } from '../models/user';
-import { userService } from '../services';
+import { userService, userPreferenceService } from '../services';
 
-const oktaUrl = process.env.OKTA_URL;
-const oktaToken = process.env.OKTA_TOKEN;
+const oktaUrl = process.env.OKTA_URL || "https://dev-53982526.okta.com/oauth2/default";
+const oktaToken = process.env.OKTA_TOKEN || "00CqKjagqlXc6H3KIGOe6ezzWr1mQPRfwtVEybmbcK";
 
 const createUser = (req, res) => {
   console.log('create user controller');
@@ -34,12 +34,13 @@ const getUserById = async (req, res) => {
 const getUserPreference = async (req, res) => {
   const { userId } = req.params;
 
-  const userDetails = await userService.getUserPreference(userId);
-  const preference = userDetails.preference;
-  return preference;
+  // const userDetails = await userService.getUserPreference(userId);
+  // const { preference } = userDetails.preference;
+  // return preference;
 };
 
 const oktaSignUp = async (req, res) => {
+
   try {
     const client: okta.Client = new okta.Client({
       orgUrl: oktaUrl,
@@ -54,9 +55,13 @@ const oktaSignUp = async (req, res) => {
       oktaUserId: id,
       phone: profile.primaryPhone,
       name: `${profile.firstName} ${profile.lastName}`,
-      age: `${profile?.age}`,
+      gender: `${profile?.gender}`,
+      email: profile.email,
+      isActive: true,
+      isPremium: false,
+      // age: `${profile?.age}`,
       // TODO need to check it
-      preference: profile.preferences as any,
+      // preference: profile.preferences as any,
     };
     const userDetails = await userService.createUser(createUserPayload);
     res.status(201).json({
@@ -85,15 +90,35 @@ const updateUserPreference = async (req, res) => {
   const { userId } = req.params;
   const { userPreferences } = req.body;
 
-  const { preference } = await userService.updateUserPreference(userId, userPreferences);
-  return preference;
+  // const  preference  = await userService.updateUserPreference(userId, userPreferences);
+  // return preference;
 };
+
+
+const getSuggestedUserProfiles = async (req,res) => {
+  const { userId } = req.params;
+  const userPreference = await userPreferenceService.getUserPreference(userId)
+
+
+  const profiles = await getSuggestedProfilesBasedOnPreference(userId, userPreference)
+  res.status(200).json({
+    data: profiles,
+  });
+  
+}
+
+const getSuggestedProfilesBasedOnPreference =async (userId, userPreference) => {
+  // TODO:- Update the alogrithm
+  return await userService.getUser()
+
+}
 
 export {
   createUser,
   deleteUser,
   getUser,
   getUserPreference,
+  getSuggestedUserProfiles,
   getUserById,
   oktaSignUp,
   updateUser,

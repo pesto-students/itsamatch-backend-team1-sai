@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { IUserPreference } from './userPreference';
 
 export interface ILocation {
@@ -8,14 +8,14 @@ export interface ILocation {
 
 export interface IUser {
   name: string;
-  dob: Date;
-  gender: string;
+  dob?: Date;
+  gender?: string;
   phone: string;
   email?: string;
   oktaUserId: string;
   location?: ILocation;
-  isActive: boolean;
-  isPremium: boolean;
+  isActive?: boolean;
+  isPremium?: boolean;
   preference?: Schema.Types.ObjectId | IUserPreference;
 }
 

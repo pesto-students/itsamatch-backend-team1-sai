@@ -6,6 +6,7 @@ import {
   getUserPreference,
   getUser,
   getUserById,
+  getSuggestedUserProfiles,
   oktaSignUp,
   updateUser,
   updateUserPreference,
@@ -17,5 +18,6 @@ userRoutes.route('/okta-sign-up').post(oktaSignUp);
 userRoutes.route('/').get(getUser).post(createUser);
 userRoutes.route('/:userId').get(getUserById).put(updateUser).delete(deleteUser);
 userRoutes.route('/:userId/preference').get(getUserPreference).put(updateUserPreference);
+userRoutes.route('/:userId/profiles').get(getSuggestedUserProfiles)
 
 export default userRoutes;
