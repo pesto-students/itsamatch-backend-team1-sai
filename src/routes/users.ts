@@ -7,7 +7,9 @@ import {
   getUser,
   getUserById,
   getSuggestedUserProfiles,
+  getLoginCallBack,
   oktaSignUp,
+  postLoginCallBack,
   updateUser,
   updateUserPreference,
 } from '../controllers';
@@ -15,6 +17,7 @@ import {
 const userRoutes = Router();
 
 userRoutes.route('/okta-sign-up').post(oktaSignUp);
+userRoutes.route('/callback').get(getLoginCallBack).post(postLoginCallBack);
 userRoutes.route('/').get(getUser).post(createUser);
 userRoutes.route('/:userId').get(getUserById).put(updateUser).delete(deleteUser);
 userRoutes.route('/:userId/preference').get(getUserPreference).put(updateUserPreference);
