@@ -34,21 +34,22 @@ const getUserById = async (req, res) => {
 const getUserPreference = async (req, res) => {
   const { userId } = req.params;
 
-  // const userDetails = await userService.getUserPreference(userId);
-  // const { preference } = userDetails.preference;
-  // return preference;
+  const userPreferencesDetails = await userService.getUserPreference(userId);
+  return userPreferencesDetails;
 };
 
 const oktaSignUp = async (req, res) => {
   try {
     const client: okta.Client = new okta.Client({
-      orgUrl: oktaUrl,
+      orgUrl: 'http://localhost:9000/users',
       token: oktaToken,
     });
     const body = req.body;
 
-    const response: OktaUser = await client.createUser(body);
+    console.log('creating okta user');
+    const response: OktaUser = await client.createUser({ profile: body });
     const { profile, id } = response;
+    console.log(profile);
 
     const createUserPayload: IUser = {
       oktaUserId: id,
@@ -59,6 +60,8 @@ const oktaSignUp = async (req, res) => {
       isActive: true,
       isPremium: false,
       // age: `${profile?.age}`,
+      // @ts-ignore
+      dob: `${profile?.dob}`,
       // TODO need to check it
       // preference: profile.preferences as any,
     };

@@ -1,4 +1,4 @@
-import { IUser, User } from '../models';
+import { IUser, IUserPreference, User, UserPreference } from '../models';
 
 const getUser = async (page = 1, size = 20) => {
   return await User.find({})
@@ -18,10 +18,10 @@ const createUser = async (user: IUser): Promise<IUser> => {
   }
 };
 
-// const getUserPreference = async (userId: string): Promise<IUserPreference> => {
-//   const { preference } = await User.findOne({ _id: userId }).populate('preference');
-//   return preference;
-// };
+const getUserPreference = async (userId: string): Promise<IUserPreference> => {
+  const userPreference = await UserPreference.findOne({ user: userId });
+  return userPreference;
+};
 
 const updateById = async (userId: string, userPayload: Partial<IUser>): Promise<IUser> => {
   try {
@@ -32,15 +32,14 @@ const updateById = async (userId: string, userPayload: Partial<IUser>): Promise<
   }
 };
 
-// const updateUserPreference = async (userId: string, userPreference: any): Promise<IUserPreference> => {
-//   const { preference } = await User.findOneAndUpdate(
-//     { _id: userId },
-//     { preference: userPreference },
-//     { new: true }
-//   ).populate('UserPreference');
+const updateUserPreference = async (userId: string, userPreference: any): Promise<IUserPreference> => {
+  const userPreferenceDetail = await UserPreference.findOneAndUpdate(
+    { user: userId },
+    { ...userPreference },
+    { new: true }
+  );
 
-//   // return preference;
-// };
+  return userPreferenceDetail;
+};
 
-// export { createUser, getById, getUser, getUserPreference, updateById, updateUserPreference };
-export { createUser, getById, getUser, updateById };
+export { createUser, getById, getUser, getUserPreference, updateById, updateUserPreference };

@@ -20,8 +20,8 @@ dbConnection();
 
 const app = express();
 app.use(cors());
-app.use(express.json()) //For JSON requests
 app.use(express.urlencoded({extended: true}));
+app.use(express.json()) //For JSON requests
 
 Sentry.init({
   dsn: config.SENTRY_DSN,
