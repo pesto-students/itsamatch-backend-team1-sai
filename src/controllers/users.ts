@@ -110,6 +110,15 @@ const getSuggestedProfilesBasedOnPreference = async (userId, userPreference, pag
   return await userService.getUser(page, size);
 };
 
+const getLoginCallBack =async (req, res) => {
+  console.log("This is get login call back",req.body)
+}
+
+const postLoginCallBack =async (req, res) => {
+  console.log("This is post login call back",req.body)
+}
+
+
 export {
   createUser,
   deleteUser,
@@ -117,7 +126,9 @@ export {
   getUserPreference,
   getSuggestedUserProfiles,
   getUserById,
+  getLoginCallBack,
   oktaSignUp,
+  postLoginCallBack,
   updateUser,
   updateUserPreference,
 };
