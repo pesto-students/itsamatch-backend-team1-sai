@@ -6,6 +6,13 @@ export interface ILocation {
   longitude?: string;
 }
 
+export interface IUserInfo {
+  smoking: string;
+  drinking: string;
+  weight: string;
+  height: string;
+}
+
 export interface IUser {
   name: string;
   dob?: Date;
@@ -17,6 +24,8 @@ export interface IUser {
   isActive?: boolean;
   isPremium?: boolean;
   preference?: Schema.Types.ObjectId | IUserPreference;
+  description: string;
+  info: IUserInfo;
 }
 
 const userSchema = new Schema<IUser>({
@@ -33,6 +42,13 @@ const userSchema = new Schema<IUser>({
   isActive: { type: Boolean, required: true, default: true },
   isPremium: { type: Boolean, required: true, default: false },
   preference: { type: Schema.Types.ObjectId, ref: 'UserPreference' },
+  description: { type: String, required: true },
+  info:{
+    smoking: { type: Boolean, required: true, default: false },
+    drinking: { type: Boolean, required: true, default: false },
+    weight: { type: String, required: true },
+    height:{ type: String, required: true},
+  }
 });
 
 export const User = model<IUser>('User', userSchema);
